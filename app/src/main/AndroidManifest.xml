@@ -13,6 +13,7 @@
         android:theme="@style/Theme.ServicesTest">
         <service android:name=".MyService"/>
         <service android:name=".MyForegroundService"/>
+        <service android:name=".MyIntentService"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

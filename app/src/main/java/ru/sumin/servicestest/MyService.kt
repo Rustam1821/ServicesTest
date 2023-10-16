@@ -33,8 +33,6 @@ class MyService : Service() {
                 log("Timer $i")
             }
         }
-        stopSelf() // we can stop the service from within, like here
-        //or from outside MainActivity -> stopService(MyForegroundService.newIntent(this))
         return START_REDELIVER_INTENT
     }
 
