@@ -25,7 +25,7 @@ class MyService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("onStartCommand")
-        val start = intent?.getIntExtra(EXTRA_START, 0)?:0
+        val start = intent?.getIntExtra(EXTRA_START, 0) ?: 0
 
         scope.launch {
             for (i in start until start + 100) {
@@ -33,6 +33,8 @@ class MyService : Service() {
                 log("Timer $i")
             }
         }
+        stopSelf() // we can stop the service from within, like here
+        //or from outside MainActivity -> stopService(MyForegroundService.newIntent(this))
         return START_REDELIVER_INTENT
     }
 
