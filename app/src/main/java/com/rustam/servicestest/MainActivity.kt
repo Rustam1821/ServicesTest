@@ -2,12 +2,13 @@ package com.rustam.servicestest
 
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
+import android.app.job.JobWorkItem
 import android.content.ComponentName
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import ru.sumin.servicestest.databinding.ActivityMainBinding
+import com.rustam.servicestest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,12 +36,15 @@ class MainActivity : AppCompatActivity() {
 
             val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                .setPersisted(true)
-                .setExtras(MyJobService.createBundle(page++))
+//                .setRequiresCharging(true)
                 .build()
 
             val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-            jobScheduler.schedule(jobInfo)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val intent = MyJobService.newIntent(page++)
+                jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
+            }
         }
     }
 }

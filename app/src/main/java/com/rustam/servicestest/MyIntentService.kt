@@ -9,7 +9,6 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import ru.sumin.servicestest.R
 
 class MyIntentService : IntentService(NAME) {
 

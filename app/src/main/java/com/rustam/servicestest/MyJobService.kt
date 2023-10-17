@@ -2,6 +2,8 @@ package com.rustam.servicestest
 
 import android.app.job.JobParameters
 import android.app.job.JobService
+import android.content.Intent
+import android.os.Build
 import android.os.PersistableBundle
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
@@ -22,13 +24,23 @@ class MyJobService : JobService() {
     override fun onStartJob(params: JobParameters?): Boolean {
         log("onStartJob")
 
-        val page = params?.extras?.getInt(PAGE) ?: 0
-        scope.launch {
-                for (i in 0 until 5) {
-                    delay(1000)
-                    log("Timer $i, page: $page")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            scope.launch {
+
+                var workItem = params?.dequeueWork()
+                while (workItem != null) {
+                    val page = workItem.intent.getIntExtra(PAGE, 0)
+
+                    for (i in 0 until 5) {
+                        delay(1000)
+                        log("Timer $i, page: $page")
+                    }
+                    params?.completeWork(workItem!!)
+                    workItem = params?.dequeueWork()
                 }
-            jobFinished(params, true)
+                jobFinished(params, true)
+
+            }
         }
         return true
     }
@@ -46,15 +58,15 @@ class MyJobService : JobService() {
 
 
     private fun log(message: String) {
-        Log.d("MyService_TAG", message)
+        Log.d("MyJobService_TAG", message)
     }
 
     companion object {
         const val JOB_ID = 111
         const val PAGE = "page"
 
-        fun createBundle(page: Int) = PersistableBundle().apply {
-            putInt(PAGE, page)
+        fun newIntent(page: Int) = Intent().apply {
+            putExtra(PAGE, page)
         }
     }
 
