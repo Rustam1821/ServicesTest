@@ -1,4 +1,4 @@
-package ru.sumin.servicestest
+package com.rustam.servicestest
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -9,9 +9,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
