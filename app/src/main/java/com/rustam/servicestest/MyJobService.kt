@@ -1,11 +1,7 @@
-package ru.sumin.servicestest
+package com.rustam.servicestest
 
-import android.app.Service
 import android.app.job.JobParameters
 import android.app.job.JobService
-import android.content.Context
-import android.content.Intent
-import android.os.IBinder
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +33,7 @@ class MyJobService : JobService() {
 
     override fun onStopJob(params: JobParameters?): Boolean {
         log("onStopJob")
-        true
+        return true
     }
 
     override fun onDestroy() {
@@ -50,6 +46,10 @@ class MyJobService : JobService() {
 
     private fun log(message: String) {
         Log.d("MyService_TAG", message)
+    }
+
+    companion object {
+        const val JOB_ID = 111
     }
 
 

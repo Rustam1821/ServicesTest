@@ -1,28 +1,27 @@
-package ru.sumin.servicestest
+package com.rustam.servicestest
 
+import android.app.IntentService
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import ru.sumin.servicestest.R
 
-class MyForegroundService : Service() {
+class MyIntentService : IntentService(NAME) {
 
-    private val scope = CoroutineScope(Dispatchers.Main)
-    override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
+    override fun onHandleIntent(intent: Intent?) {
+        //This code is executed not in the Main thread
+        //Immediately after executing this method, the service will be stopped automatically.
+        // There is no need to call the stopService/stopSelf method manually
+        log("onStartCommand")
+        for (i in 0 until 8) {
+            Thread.sleep(1000)
+            log("Timer $i")
+        }
     }
 
     override fun onCreate() {
@@ -33,10 +32,10 @@ class MyForegroundService : Service() {
     }
 
     private fun createNotification(): Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Foreground Title")
-            .setContentText("Foreground Content text")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .build()
+        .setContentTitle("Foreground Title")
+        .setContentText("Foreground Content text")
+        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .build()
 
     private fun createNotificationChannel() {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -50,26 +49,13 @@ class MyForegroundService : Service() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        log("onStartCommand")
-
-        scope.launch {
-            for (i in 0 until 100) {
-                delay(1000)
-                log("Timer $i")
-            }
-        }
-        return START_STICKY
-    }
-
     override fun onDestroy() {
         log("onDestroy")
-        scope.cancel()
         super.onDestroy()
     }
 
     private fun log(message: String) {
-        Log.d("MyForegroundService_TAG", message)
+        Log.d("MyIntentService_TAG", message)
     }
 
     companion object {
@@ -77,6 +63,8 @@ class MyForegroundService : Service() {
         private const val CHANNEL_ID = "channel_id"
         private const val CHANNEL_NAME = "channel_name"
         private const val NOTIFICATION_ID = 1
-        fun newIntent(context: Context) = Intent(context, MyForegroundService::class.java)
+        private const val NAME = "intent_service"
+
+        fun newIntent(context: Context) = Intent(context, MyIntentService::class.java)
     }
 }

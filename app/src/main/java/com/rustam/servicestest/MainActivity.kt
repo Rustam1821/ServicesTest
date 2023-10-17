@@ -1,13 +1,11 @@
-package ru.sumin.servicestest
+package com.rustam.servicestest
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import ru.sumin.servicestest.databinding.ActivityMainBinding
 
@@ -29,8 +27,19 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.startForegroundService(this, MyForegroundService.newIntent(this))
         }
         binding.intentService.setOnClickListener {
-            Log.e("--->", "button tapped")
             startService(MyIntentService.newIntent(this))
+        }
+        binding.jobScheduler.setOnClickListener {
+
+            val componentName = ComponentName(this, MyJobService::class.java)
+
+            val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .setPersisted(true)
+                .build()
+
+            val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
+            jobScheduler.schedule(jobInfo)
         }
     }
 }
