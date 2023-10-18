@@ -6,6 +6,7 @@ import android.app.job.JobWorkItem
 import android.content.ComponentName
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.rustam.servicestest.databinding.ActivityMainBinding
@@ -44,6 +45,10 @@ class MainActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val intent = MyJobService.newIntent(page++)
                 jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
+            } else {
+                Log.e("--->", "else case")
+                val intent = MyIntentServiceShort.newIntent(this, page++)
+                startService(intent)
             }
         }
     }

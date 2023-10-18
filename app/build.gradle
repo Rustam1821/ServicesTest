@@ -7,7 +7,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "ru.sumin.servicestest"
+        applicationId "com.rustam.servicestest"
         minSdk 21
         targetSdk 30
         versionCode 1

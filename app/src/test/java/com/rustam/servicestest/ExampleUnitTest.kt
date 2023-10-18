@@ -1,4 +1,4 @@
-package ru.sumin.servicestest
+package com.rustam.servicestest
 
 import org.junit.Test
 
