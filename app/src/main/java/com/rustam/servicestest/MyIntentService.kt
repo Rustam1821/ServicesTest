@@ -54,7 +54,7 @@ class MyIntentService : IntentService(NAME) {
     }
 
     private fun log(message: String) {
-        Log.d("MyIntentService_TAG", message)
+        Log.d("SERVICE_TAG", "MyIntentService: $message")
     }
 
     companion object {

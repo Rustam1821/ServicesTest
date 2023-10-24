@@ -58,7 +58,7 @@ class MyJobService : JobService() {
 
 
     private fun log(message: String) {
-        Log.d("MyJobService_TAG", message)
+        Log.d("SERVICE_TAG", "MyJobService: $message")
     }
 
     companion object {
