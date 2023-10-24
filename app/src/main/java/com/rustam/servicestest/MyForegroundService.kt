@@ -67,7 +67,7 @@ class MyForegroundService : Service() {
     }
 
     private fun log(message: String) {
-        Log.d("MyForegroundService_TAG", message)
+        Log.d("SERVICE_TAG", "MyForegroundService: $message")
     }
 
     companion object {
