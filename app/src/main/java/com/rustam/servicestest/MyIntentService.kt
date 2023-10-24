@@ -16,7 +16,7 @@ class MyIntentService : IntentService(NAME) {
         //This code is executed not in the Main thread
         //Immediately after executing this method, the service will be stopped automatically.
         // There is no need to call the stopService/stopSelf method manually
-        log("onStartCommand")
+        log("onHandleIntent")
         for (i in 0 until 8) {
             Thread.sleep(1000)
             log("Timer $i")
